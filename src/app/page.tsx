@@ -1,4 +1,4 @@
-import { CreateUser } from "@/actions/actions";
+import { CreateUser } from "../actions/actions";
 import Image from "next/image";
 
 export default function Home() {
