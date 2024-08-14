@@ -9,10 +9,12 @@ const Dashboard = async () => {
         redirect("/")
     }
   return (
-      <div className="flex-col flex items-center">
-        <h1 className = "text-7xl font-bold mt-16 py-4 text-center">DASHBOARD WIP</h1>
+      <div className="flex-col flex">
+        <h1 className = "text-7xl font-bold mt-16 py-4 text-left">DASHBOARD WIP</h1>
         {/* <h1 className='text-4xl'>{user?.email}</h1> */}
         <h1 className='text-4xl'>shlawg</h1>
+        {/* TO-DO: Add paginated list / blocks to view your schedules from */}
+        <button className='flex align-bottom mt-96'>Hello</button>
       </div>
   )
 }

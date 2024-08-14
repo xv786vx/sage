@@ -12,7 +12,7 @@ const Navbar = async() => {
       <div className="w-full mx-auto px-12">
         <div className="flex justify-between h-14 items-center relative">
           <nav className="flex gap-4 z-10 float-left">
-            {!session?.user ? (
+            {session?.user ? (
               <div className='gap-4 flex items-center'>
                 <Link
                   href="/dashboard"

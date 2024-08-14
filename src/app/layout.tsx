@@ -22,7 +22,7 @@ export default async function RootLayout({
     <SessionProvider session={session}>
     <html lang="en">
         <body className={inter.className}>
-          <div className="mx-auto max-w-screen-lg h-screen flex flex-col">
+          <div className="mx-auto max-w-[94%] h-screen flex flex-col">
             <Navbar />
             <div className="flex-grow">{children}</div>
           </div>
