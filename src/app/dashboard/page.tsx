@@ -1,14 +1,13 @@
 import React from 'react'
-import Link from 'next/link';
-import prisma from "@/lib/db"
+import { db } from "../../lib/db"
+import { auth } from '../../../auth'
+import { redirect } from 'next/navigation';
 
-export default async function Dashboard({ params }) {
-
-  // const user = await prisma.user.findUnique({
-  //   where: {
-  //     email: params.email
-  //   }
-  // })
+const Dashboard = async () => {
+  const session = await auth()
+    if (!session?.user) {
+        redirect("/")
+    }
   return (
       <div className="flex-col flex items-center">
         <h1 className = "text-7xl font-bold mt-16 py-4 text-center">DASHBOARD WIP</h1>
@@ -17,3 +16,5 @@ export default async function Dashboard({ params }) {
       </div>
   )
 }
+
+export default Dashboard

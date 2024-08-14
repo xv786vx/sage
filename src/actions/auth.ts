@@ -20,9 +20,9 @@ const getUserByEmail = async (email: string) => {
 }
 
 export const login = async(provider: string) => {
-    await signIn(provider, {redirectTo: "/"});
+    await signIn(provider, {redirectTo: "/dashboard"});
 
-    revalidatePath("/")
+    revalidatePath("/dashboard")
 }
 
 export const logout = async () => {
@@ -35,7 +35,7 @@ export const loginWithCreds = async(formData: FormData) => {
         email: formData.get("email"),
         password: formData.get("password"),
         role: "ADMIN",
-        redirectTo: "/",
+        redirectTo: "/dashboard",
     }
 
     // 4 debugging purposes
@@ -57,6 +57,6 @@ export const loginWithCreds = async(formData: FormData) => {
         throw error
     }
 
-    revalidatePath("/")
+    revalidatePath("/dashboard")
 
 }
