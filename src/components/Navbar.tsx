@@ -22,11 +22,11 @@ const Navbar = async() => {
                   Dashboard
                 </Link>
                 <Link
-                  href="/create-task"
+                  href="/create-schedule"
                   className="font-medium flex items-center text-sm transition-colors hover:underline"
                   prefetch={false}
                 >
-                  Create Task
+                  Create Schedule
                 </Link>
               </div>
             ): (

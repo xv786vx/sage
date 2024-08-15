@@ -8,14 +8,32 @@ enum UserRole {
   USER
 }
 
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
 generator client {
   provider = "prisma-client-js"
 }
 
 model Task {
-  id      Int    @id @default(autoincrement())
-  title   String
-  content String
+  id         Int       @id @default(autoincrement())
+  title      String
+  context    String?
+  startTime  DateTime  @default(now())
+  endTime    DateTime
+  priority   Priority
+  Schedule   Schedule? @relation(fields: [scheduleId], references: [id])
+  scheduleId Int?
+}
+
+model Schedule {
+  id     Int     @id @default(autoincrement())
+  tasks  Task[]
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
 }
 
 model User {
@@ -27,6 +45,8 @@ model User {
   image          String?
   accounts       Account[]
   role           UserRole? @default(ADMIN)
+
+  schedules Schedule[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

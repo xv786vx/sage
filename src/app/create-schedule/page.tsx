@@ -2,7 +2,7 @@ import React from 'react'
 import { auth } from '../../../auth'
 import { redirect } from 'next/navigation'
 
-const CreateTask = async () => {
+const CreateSchedule = async () => {
     const session = await auth()
     if (!session?.user) {
         redirect("/")
@@ -15,4 +15,4 @@ const CreateTask = async () => {
   )
 }
 
-export default CreateTask
+export default CreateSchedule
