@@ -8,10 +8,9 @@ const CreateSchedule = async () => {
         redirect("/")
     }
   return (
-    <main className='flex h-full items-center justify-center flex-col gap-2'>
-        <h1 className='text-3xl'>Create Tasks Here</h1>
-        <p className='text-lg'>{session?.user?.email}</p>
-    </main>
+    <div className='flex flex-col relative items-center h-screen mt-14 mx-auto w-[50%]'>
+        <h1 className='text-4xl font-bold my-8 pb-8'>Create Tasks Here</h1>
+    </div>
   )
 }
 
