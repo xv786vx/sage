@@ -16,6 +16,7 @@ const ExpandableCardDemo = ( {cards}: Props ) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setActive(false);

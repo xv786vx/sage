@@ -2,7 +2,8 @@ import React from 'react'
 import { db } from "../../lib/db"
 import { auth } from '../../../auth'
 import { redirect } from 'next/navigation';
-import { BsPlus, BsClipboard } from 'react-icons/bs'
+import { LuPlusSquare } from 'react-icons/lu'
+
 import Link from 'next/link';
 
 const Dashboard = async () => {
@@ -17,7 +18,7 @@ const Dashboard = async () => {
         {/* TO-DO: Add paginated list / blocks to view your schedules from */}
         <Link href="/create-schedule" className='mt-auto mb-8'>
           <div className='relative flex items-center justify-center w-20 h-20 rounded-2xl hover:bg-black ease-in-out duration-300 group'>
-            <BsPlus size='48' className='group-hover:rotate-90 ease-in-out duration-300 text-black group-hover:text-white'/>
+            <LuPlusSquare size='48' className='group-hover:rotate-90 ease-in-out duration-300 text-black group-hover:text-white'/>
             <span className='sidebar-tooltip absolute w-auto p-2 m-2 min-w-max left-20
                             rounded-md shadow-md
                           text-white bg-gray-900
