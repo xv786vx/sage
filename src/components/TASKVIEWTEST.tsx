@@ -1,15 +1,19 @@
 "use client";
 
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "../hooks/use-outside-click"
+import { Task } from "@prisma/client";
 
-export function ExpandableCardDemo() {
+interface Props {
+    cards: Task[]
+}
+
+const ExpandableCardDemo = ( {cards}: Props ) => {
   const [active, setActive] = useState<(typeof cards)[number] | boolean | null>(
     null
   );
   const ref = useRef<HTMLDivElement>(null);
-  const id = useId();
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -47,7 +51,7 @@ export function ExpandableCardDemo() {
         {active && typeof active === "object" ? (
           <div className="fixed inset-0 grid place-items-center z-[100]">
             <motion.div
-              layoutId={`card-${active.title}-${id}`}
+              layoutId={`card-${active.title}`}
               ref={ref}
               className="mt-12 w-[45%] h-[70%] flex flex-col bg-white dark:bg-neutral-900 sm:rounded-2xl overflow-hidden"
             >
@@ -57,7 +61,7 @@ export function ExpandableCardDemo() {
                   <div className="">
                     {/* title in expanded card */}
                     <motion.h3
-                      layoutId={`title-${active.title}-${id}`}
+                      layoutId={`title-${active.title}`}
                       className="font-bold text-white text-3xl"
                     >
                       {active.title}
@@ -66,11 +70,11 @@ export function ExpandableCardDemo() {
 
                     {/* button (change this to an edit button and duplicate for the delete) */}
                   <motion.a
-                    layoutId={`button-${active.title}-${id}`}
+                    layoutId={`button-${active.title}`}
                     target="_blank"
                     className="px-4 py-3 text-sm rounded-full font-bold bg-green-500 text-white cursor-pointer"
                   >
-                    {active.ctaText}
+                    edit
                   </motion.a>
                 </div>
                 <div className="pt-4 relative px-4">
@@ -79,11 +83,9 @@ export function ExpandableCardDemo() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-neutral-600 text-xs md:text-sm lg:text-base h-40 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                    className="text-white ml-2 text-lg h-fit pb-10 flex flex-col items-start gap-4 overflow-auto [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                   >
-                    {typeof active.content === "function"
-                      ? active.content()
-                      : active.content}
+                    active.context
                   </motion.div>
                 </div>
               </div>
@@ -92,40 +94,34 @@ export function ExpandableCardDemo() {
         ) : null}
       </AnimatePresence>
       <ul className="max-w-2xl mx-auto w-full gap-4">
-        {cards.map((card, index) => (
+        {cards.map((cards, index) => (
             // This div is responsible for the card before expanding 
           <motion.div
-            layoutId={`card-${card.title}-${id}`}
-            key={`card-${card.title}-${id}`}
-            onClick={() => setActive(card)}
+            layoutId={`card-${cards.title}`}
+            key={`card-${cards.title}`}
+            onClick={() => setActive(cards)}
             // div containing everything inside of it 
             className="p-4 flex flex-col md:flex-row justify-between items-center hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer" 
           >
             {/* div containing header (song name) + subtitle (artist) */}
             <div className="flex gap-4 flex-col md:flex-row ">
-              <motion.div layoutId={`image-${card.title}-${id}`}>
+              <motion.div layoutId={`image-${cards.title}`}>
               </motion.div>
               <div className="">
                 <motion.h3
-                  layoutId={`title-${card.title}-${id}`}
+                  layoutId={`title-${cards.title}`}
                   className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left"
                 >
-                  {card.title}
+                  {cards.title}
                 </motion.h3>
                 {/* subtitle (artist name) */}
-                <motion.p
-                  layoutId={`description-${card.description}-${id}`}
-                  className="text-blue-500 text-center md:text-left"
-                >
-                  {card.description}
-                </motion.p>
               </div>
             </div>
             <motion.button
-              layoutId={`button-${card.title}-${id}`}
+              layoutId={`button-${cards.title}`}
               className="px-4 py-2 text-sm rounded-full font-bold bg-gray-100 hover:bg-green-500 hover:text-white text-black mt-4 md:mt-0"
             >
-              {card.ctaText}
+              edit
             </motion.button>
           </motion.div>
         ))}
@@ -134,18 +130,4 @@ export function ExpandableCardDemo() {
   );
 }
 
-
-const cards = [
-  {
-    description: "Lana Del Rey",
-    title: "Summertime Sadness",
-    ctaText: "Play",
-    content: () => {
-      return (
-        <p>
-          lorem ipsum yada yada yada
-        </p>
-      );
-    },
-  },
-];
+export default ExpandableCardDemo
