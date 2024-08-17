@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { auth } from "../../auth";
 import { SessionProvider } from "next-auth/react";
-import Navbar  from "@/components/Navbar";
+import Navbar from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,17 +17,17 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth()
+  const session = await auth();
   return (
     <SessionProvider session={session}>
-    <html lang="en">
+      <html lang="en">
         <body className={inter.className}>
-          <div className="mx-auto max-w-[94%] h-screen flex flex-col">
+          <div className="mx-auto flex h-screen max-w-[94%] flex-col">
             <Navbar />
             <div className="flex-grow">{children}</div>
           </div>
         </body>
-    </html>
+      </html>
     </SessionProvider>
   );
 }

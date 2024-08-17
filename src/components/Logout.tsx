@@ -1,14 +1,16 @@
-'use client'
+"use client";
 
-import React from 'react'
-import { logout } from '../actions/auth'
+import React from "react";
+import { logout } from "../actions/auth";
 
 const Logout = () => {
   return (
     <div onClick={() => logout()}>
-        <button className='bg-black hover:bg-gray-700 text-white font-semibold py-2 px-3 text-sm rounded-lg ease-in-out duration-300'>Log Out</button>
+      <button className="rounded-lg bg-black px-3 py-2 text-sm font-semibold text-white duration-300 ease-in-out hover:bg-gray-700">
+        Log Out
+      </button>
     </div>
-  )
-}
+  );
+};
 
-export default Logout
+export default Logout;

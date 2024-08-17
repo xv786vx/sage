@@ -23,7 +23,7 @@ model Task {
   title      String
   context    String?
   startTime  DateTime  @default(now())
-  endTime    DateTime
+  endTime    DateTime  @default(now())
   priority   Priority
   Schedule   Schedule? @relation(fields: [scheduleId], references: [id])
   scheduleId Int?
