@@ -2,11 +2,9 @@
 
 // To-do:
 // 3. add a delete button
-// 4. write function in action.ts to save task to localStorage when clicking checkmark
 // 5. add button to export current tasks (only add in functionality to clear localStorage and save all tasks to prisma db)
 
 // Later:
-// 1. make TESTING only show user-specific tasks
 // 2. actually export as a .ics (calendar file)
 // 3. fix UI colours
 // 4. ???
@@ -16,7 +14,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "../hooks/use-outside-click";
 import { Task } from "@prisma/client";
 import { LuTrash2, LuPenSquare, LuCheck, LuPlusSquare } from "react-icons/lu";
-import { createDefaultTask } from "@/actions/actions";
+import { createDefaultTask, updateTask } from "@/actions/actions";
+import { auth } from "../../auth";
 interface Props {
   cards: Task[];
 }
@@ -27,8 +26,10 @@ const TaskView = ({ cards }: Props) => {
   );
   const ref = useRef<HTMLDivElement>(null);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(50)
 
   useEffect(() => {
+    
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setActive(false);
@@ -84,10 +85,10 @@ const TaskView = ({ cards }: Props) => {
                 <motion.div
                   layoutId={`card-${active.title}`}
                   ref={ref}
-                  className="mt-12 flex h-[70%] w-[45%] flex-col overflow-hidden bg-blue-400 sm:rounded-2xl"
+                  className="mt-12 flex h-[70%] w-[45%] flex-col overflow-hidden bg-neutral-900 sm:rounded-2xl"
                 >
-                  <div>
-                    <div className="flex items-start justify-between p-6">
+                  <div className="bg-inherit">
+                    <div className="flex items-start justify-between p-6 bg-neutral-800">
                         {/* title in expanded card */}
                         {/* fix the below conditional so that it actually works as intended */}
                         {isEdit == false ? (
@@ -100,7 +101,7 @@ const TaskView = ({ cards }: Props) => {
                         ) : (
                           <motion.input
                             // layoutId={`title-${active.title}`}
-                            className="bg-inherit text-3xl font-bold text-white placeholder-white"
+                            className="bg-inherit text-3xl font-bold text-white placeholder-white focus:outline-none focus:underline decoration-green-300"
                             type="text"
                             placeholder="New Task..."
                             name="task-name"
@@ -116,7 +117,7 @@ const TaskView = ({ cards }: Props) => {
                         {isEdit == false ? (
                           <LuPenSquare size={28} className="text-white" />
                         ) : (
-                          <LuCheck size={28} className="text-white" />
+                          <LuCheck size={28} className="text-white" onClick={()=>updateTask(active.id)}/>
                         )}
                       </motion.button>
                     </div>
@@ -138,9 +139,33 @@ const TaskView = ({ cards }: Props) => {
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                           placeholder="Describe your task here..."
-                          className="placeholder-white mx-2 flex h-min w-[98%] flex-col items-start overflow-auto bg-inherit pb-10 text-lg text-white [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] [scrollbar-width:none]"
+                          className="placeholder-white mx-2 flex h-min w-[98%] focus:underline focus:outline-none decoration-green-300 flex-col items-start overflow-auto bg-inherit pb-10 text-lg text-white [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] [scrollbar-width:none]"
                         />
                       )}
+                    </div>
+                    <div className="flex justify-between px-16 pt-8">
+                      <div className="mx-5">
+                        <fieldset className="border border-white rounded-md pb-2 px-2">
+                          <legend className="text-white text-sm px-1">Start Date</legend>
+                          <input className="bg-transparent text-white focus:outline-none text-md w-72" type="datetime-local"/>
+                        </fieldset>
+                      </div>
+                      <div className="mx-5">
+                        <fieldset className="border border-white rounded-md pb-2 px-2">
+                          <legend className="text-white text-sm px-1">End Date</legend>
+                          <input className="bg-transparent text-white focus:outline-none text-md w-72" type="datetime-local"/>
+                        </fieldset>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-center mx-auto pt-16">
+                      <select name="Priority" className="peer font-sans block text-xl rounded-lg border p-2 bg-neutral-900 text-white font-semibold">
+                        <option className="text-green-300">Low</option>
+                        <option className="text-yellow-300">Medium</option>
+                        <option className="text-red-300">High</option>
+                      </select>
+                    </div>
+                    <div>
+                      
                     </div>
                   </div>
                 </motion.div>
