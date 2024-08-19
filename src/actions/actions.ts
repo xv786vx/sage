@@ -16,10 +16,6 @@ export async function createDefaultTask() {
     },
   });
 
-  // console.log(
-  //   "trying to fetch userId from createDefaultTask" + session?.user?.id,
-  // );
-
   revalidatePath("/testing"); //change this redirect url to the actual one when done or find a better solution to refresh the page
 }
 
@@ -33,6 +29,5 @@ export async function updateTask(formData: FormData, id: number) {
     },
   });
 
-  console.log(formData.get("title") as string);
-  console.log(formData.get("context") as string);
+  revalidatePath("/testing");
 }
