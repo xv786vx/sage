@@ -25,6 +25,9 @@ model Task {
   startTime  DateTime  @default(now())
   endTime    DateTime  @default(now())
   priority   Priority
+  sessionId String
+
+
   Schedule   Schedule? @relation(fields: [scheduleId], references: [id])
   scheduleId Int?
   user       User?     @relation(fields: [userId], references: [id])

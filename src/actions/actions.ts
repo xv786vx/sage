@@ -4,6 +4,7 @@ import { Priority, Task } from "@prisma/client";
 import { db } from "../lib/db";
 import { revalidatePath } from "next/cache";
 import { auth } from "../../auth";
+import { sessionId } from "@/lib/sessiontracker";
 
 export async function createDefaultTask() {
   const session = await auth();
@@ -13,6 +14,7 @@ export async function createDefaultTask() {
       context: "Describe your task here",
       priority: Priority.MEDIUM,
       userId: session?.user?.id,
+      sessionId: sessionId,
     },
   });
 
@@ -30,4 +32,31 @@ export async function updateTask(formData: FormData, id: number) {
   });
 
   revalidatePath("/testing");
+}
+
+export async function deleteTask(id: number) {
+  await db.task.delete({
+    where: { id },
+  });
+
+  revalidatePath("/testing");
+}
+
+export async function makeSchedule() {
+  const tasks: Task[] = await db.task.findMany({
+    where: {
+      sessionId: sessionId,
+    },
+  });
+
+  await db.schedule.create({
+    data: {
+      tasks: {
+        connect: tasks.map((task) => ({ id: task.id })),
+      },
+    },
+  });
+
+  console.log(tasks.map((task) => ({ id: task.id })));
+  console.log(tasks);
 }

@@ -13,9 +13,9 @@ import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "../hooks/use-outside-click";
 import { Task } from "@prisma/client";
-import { LuTrash2, LuPenSquare, LuCheck, LuPlusSquare } from "react-icons/lu";
-import { createDefaultTask, updateTask } from "@/actions/actions";
-import { auth } from "../../auth";
+import { LuTrash2, LuPenSquare, LuCheck, LuPlusSquare, LuShare } from "react-icons/lu";
+import { createDefaultTask, deleteTask, makeSchedule, updateTask } from "@/actions/actions";
+import { sessionUpdater, sessionId } from "@/lib/sessiontracker";
 interface Props {
   cards: Task[];
 }
@@ -51,19 +51,33 @@ const Tv2 = ({ cards }: Props) => {
 
   return (
     <>
-      <div className="absolute bottom-8 z-0">
-        <button className="group relative flex h-20 w-20 items-center justify-center rounded-2xl duration-300 ease-in-out hover:bg-black">
-          <LuPlusSquare
-            size="48"
-            className="text-black duration-300 ease-in-out group-hover:rotate-90 group-hover:text-white"
-            onClick={() => {
-              createDefaultTask();
-            }}
-          />
-          <span className="sidebar-tooltip absolute left-20 m-2 w-auto min-w-max origin-left scale-0 rounded-md bg-gray-900 p-2 text-base font-bold text-white shadow-md transition-all duration-100 group-hover:scale-100">
-            Create Task
-          </span>
-        </button>
+      <div className="absolute bottom-8 z-0 w-[94%]">
+        <div className="flex flex-row justify-between ">
+          <button className="group relative flex h-20 w-20 items-center justify-center rounded-2xl duration-300 ease-in-out hover:bg-black">
+            <LuPlusSquare
+              size="48"
+              className="text-black duration-300 ease-in-out group-hover:rotate-90 group-hover:text-white"
+              onClick={() => {
+                createDefaultTask();
+              }}
+            />
+            <span className="absolute left-20 m-2 w-auto min-w-max origin-left scale-0 rounded-md bg-gray-900 p-2 text-base font-bold text-white shadow-md transition-all duration-100 group-hover:scale-100">
+              Create Task
+            </span>
+          </button>
+
+          <button className="group relative flex h-20 w-20 items-center justify-center rounded-2xl duration-300 ease-in-out hover:bg-black" onClick={() => {makeSchedule()}}>
+            <LuShare
+              size="48"
+              className="text-black duration-300  ease-in-out group-hover:text-white"
+              
+            />
+            <span className="absolute right-20 m-2 w-auto min-w-max origin-right scale-0 rounded-md bg-gray-900 p-2 text-base font-bold text-white shadow-md transition-all duration-100 group-hover:scale-100">
+              Export to Schedule
+            </span>
+          </button>
+
+        </div>
       </div>
       {/* The below controls the background presence when you expand the card. Nothing to do with the card itself */}
       {cards.length == 0 ? (
@@ -212,7 +226,7 @@ const Tv2 = ({ cards }: Props) => {
               <motion.div
                 layoutId={`card-${cards.title}`}
                 key={`card-${cards.title}`}
-                onClick={() => setActive(cards)}
+                
                 // div containing everything inside of it
                 className="my-4 flex cursor-pointer flex-col items-center justify-between rounded-xl p-4 hover:bg-gray-200 md:flex-row"
               >
@@ -233,6 +247,9 @@ const Tv2 = ({ cards }: Props) => {
                     <LuTrash2
                       size={24}
                       className="text-red-600 hover:text-red-400"
+                      onClick={() => {
+                        deleteTask(cards.id), setActive(null)
+                      }}
                     />
                   </button>
                   <button>

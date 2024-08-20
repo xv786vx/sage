@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { signIn, signOut } from "../../auth";
 import { revalidatePath } from "next/cache";
 import { AuthError } from "next-auth";
+import { sessionId, sessionUpdater } from "@/lib/sessiontracker";
 
 const getUserByEmail = async (email: string) => {
   try {
@@ -23,6 +24,7 @@ export const login = async (provider: string) => {
   await signIn(provider, { redirectTo: "/dashboard" });
 
   revalidatePath("/dashboard");
+  sessionUpdater(); //updates the uuid
 };
 
 export const logout = async () => {
@@ -58,4 +60,5 @@ export const loginWithCreds = async (formData: FormData) => {
   }
 
   revalidatePath("/dashboard");
+  sessionUpdater(); //updates the uuid
 };

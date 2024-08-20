@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { auth } from "../../../auth";
 import TaskView from "@/components/TaskView";
 import Tv2 from "@/components/tv2"
+import { sessionId } from "@/lib/sessiontracker";
 
 const Testing = async () => {
   const session = await auth();
@@ -16,6 +17,7 @@ const Testing = async () => {
         <Tv2 cards={await db.task.findMany({
           where: {
             userId: session?.user?.id,
+            sessionId: sessionId,
           },
         })}/>
     </div>
