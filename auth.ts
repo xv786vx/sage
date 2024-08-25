@@ -7,6 +7,8 @@ import bcrypt from "bcryptjs";
 // import credentials from "next-auth/providers/credentials";
 import { saltAndHashPassword } from "../sage-new/src/lib/encrypter";
 import type { User } from "next-auth";
+import { getCookie, setCookie } from "cookies-next";
+import { getSessionId, initializeSessionId } from "@/lib/sessiontracker";
 
 export const {
   handlers: { GET, POST },
@@ -61,6 +63,16 @@ export const {
             throw new Error("Incorrect password.");
           }
         }
+        // setCookie("sessionID", initializeSessionId(), {
+        //   path: "/",
+        //   secure: false,
+        // });
+        localStorage.setItem("sessionID", initializeSessionId());
+        console.log(
+          "retrieved cookie w local storage: " +
+            localStorage.getItem("sessionID"),
+        );
+        console.log(getSessionId());
 
         return user as User; // probably a bad idea to cast the type lol
       },
